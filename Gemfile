@@ -5,7 +5,7 @@ gemspec
 # load plugins
 require 'yaml'
 require 'ostruct'
-config_file = File.expand_path(File.join('~', '.siriproxy', 'config.yml'));
+config_file = File.expand_path(File.join('~', '.spvoice', 'config.yml'));
 
 unless File.exists?(config_file)
   default_config = config_file
@@ -13,7 +13,7 @@ unless File.exists?(config_file)
   puts "[Notice - Configuration] ==================== Important Configuration Notice =========================="
   puts "[Notice - Configuration] '#{default_config}' not found. Using '#{config_file}'"
   puts "[Notice - Configuration] "
-  puts "[Notice - Configuration] Remove this message by copying '#{config_file}' into '~/.siriproxy/'"
+  puts "[Notice - Configuration] Remove this message by copying '#{config_file}' into '~/.spvoice/'"
   puts "[Notice - Configuration] =============================================================================="
 end
 

@@ -1,17 +1,15 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "siriproxy/version"
+require "spvoice/version"
 
 Gem::Specification.new do |s|
-  s.name        = "siriproxy"
-  s.version     = SiriProxy::VERSION
-  s.authors     = ["plamoni", "chendo", "netpro2k"]
-  s.email       = ["plamoni@siriproxy.info"]
-  s.homepage    = "http://www.siriproxy.info/"
-  s.summary     = %q{A (tampering) proxy server for Apple's Siri}
-  s.description = %q{Siri Proxy is a proxy server for Apple's Siri "assistant." The idea is to allow for the creation of custom handlers for different actions. This can allow developers to easily add functionality to Siri.}
-
-  s.rubyforge_project = "siriproxy"
+  s.name        = "spvoice"
+  s.version     = SPVoice::VERSION
+  s.authors     = ["Jordan Hackworth"]
+  s.email       = ["spvoice@jordanhackworth.com"]
+  s.homepage    = "https://github.com/Hackworth"
+  s.summary     = %q{A Voice Automation Parser}
+  s.description = %q{}
 
   s.files         = `git ls-files 2> /dev/null`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/* 2> /dev/null`.split("\n")

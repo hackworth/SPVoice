@@ -1,7 +1,7 @@
 require 'cora'
 require 'pp'
 
-class SiriProxy::PluginManager < Cora
+class SPVoice::PluginManager < Cora
   attr_accessor :plugins, :iphone_conn, :guzzoni_conn, :response
 
   def initialize()
@@ -21,7 +21,7 @@ class SiriProxy::PluginManager < Cora
               requireName = pluginConfig['require'] || "siriproxy-#{className.downcase}"
             end
             require requireName
-            plugin = SiriProxy::Plugin.const_get(className).new(pluginConfig)
+            plugin = SPVoice::Plugin.const_get(className).new(pluginConfig)
             plugin.plugin_name = className
             plugin.manager = self
             @plugins << plugin
@@ -58,7 +58,6 @@ class SiriProxy::PluginManager < Cora
   def process(text)
     begin
       result = super(text)
-      self.guzzoni_conn.block_rest_of_session if result
       return result
     rescue Exception=>e
       log "Plugin Crashed: #{e}"
@@ -67,18 +66,13 @@ class SiriProxy::PluginManager < Cora
     end  
   end
 
-  def send_request_complete_to_iphone
-    log "Sending Request Completed"
-    object = generate_request_completed(self.guzzoni_conn.last_ref_id)
-    self.guzzoni_conn.inject_object_to_output_stream(object)
-  end
-
   def respond(text, options={})
-    self.guzzoni_conn.inject_object_to_output_stream(generate_siri_utterance(self.guzzoni_conn.last_ref_id, text, (options[:spoken] or text), options[:prompt_for_response] == true))
+    @response = text
   end
 
   def no_matches
-    return false
+    #return false
+    @response = "No plugin responded"
   end
 
   def log(text)
