@@ -4,25 +4,6 @@ require 'ostruct'
 
 class SPVoice
   $LOG_LEVEL = 0
-  
-  #BANNER = <<-EOS
-#Siri Proxy is a proxy server for Apple's Siri "assistant." The idea is to allow for the creation of custom handlers for different actions. This can allow developers to easily add functionality to Siri.
-
-#See: http://github.com/plamoni/SiriProxy/
-
-#Usage: siriproxy COMMAND OPTIONS
-
-#Commands:
-#server            Start up the Siri proxy server
-#gencerts          Generate a the certificates needed for SiriProxy
-#bundle            Install any dependancies needed by plugins
-#console           Launch the plugin test console 
-#update [dir]      Updates to the latest code from GitHub or from a provided directory
-#help              Show this usage information
-
-#Options:
-    #Option                           Command       Description
-  #EOS
 
   def initialize
     @branch = nil
@@ -60,23 +41,9 @@ class SPVoice
     load_code
     init_plugins
     start_server
-    # @todo: support for forking server into bg and start/stop/restart
-    # subcommand ||= 'start'
-    # case subcommand
-    # when 'start'    then start_server
-    # when 'stop'     then stop_server
-    # when 'restart'  then restart_server
-    # end
   end
 
   def start_server
-    if $APP_CONFIG.server_ip
-      #require 'siriproxy/dns'
-      #dns_server = SiriProxy::Dns.new
-      #dns_server.start()
-    end
-    #proxy = SiriProxy.new
-    #proxy.start()
   end
 
   def update(directory=nil)
@@ -84,23 +51,23 @@ class SPVoice
       puts "=== Installing from '#{directory}' ==="
       puts `cd #{directory} && rake install`
       puts "=== Bundling ===" if $?.exitstatus == 0
-      puts `siriproxy bundle` if $?.exitstatus == 0
+      puts `spvoice bundle` if $?.exitstatus == 0
       puts "=== SUCCESS ===" if $?.exitstatus == 0
       
       exit $?.exitstatus
     else
       branch_opt = @branch ? "-b #{@branch}" : ""
       @branch = "master" if @branch == nil
-      puts "=== Installing latest code from git://github.com/plamoni/SiriProxy.git [#{@branch}] ==="
+      puts "=== Installing latest code from git://github.com/Hackworth/SPVoice.git [#{@branch}] ==="
 
-	  tmp_dir = "/tmp/SiriProxy.install." + (rand 9999).to_s.rjust(4, "0")
+	  tmp_dir = "/tmp/SPVoice.install." + (rand 9999).to_s.rjust(4, "0")
 
 	  `mkdir -p #{tmp_dir}`
-      puts `git clone #{branch_opt} git://github.com/plamoni/SiriProxy.git #{tmp_dir}`  if $?.exitstatus == 0
+      puts `git clone #{branch_opt} git://github.com/Hackworth/SPVoice.git #{tmp_dir}`  if $?.exitstatus == 0
       puts "=== Performing Rake Install ===" if $?.exitstatus == 0
       puts `cd #{tmp_dir} && rake install`  if $?.exitstatus == 0
       puts "=== Bundling ===" if $?.exitstatus == 0
-      puts `siriproxy bundle`  if $?.exitstatus == 0
+      puts `spvoice bundle`  if $?.exitstatus == 0
       puts "=== Cleaning Up ===" and puts `rm -rf #{tmp_dir}` if $?.exitstatus == 0
       puts "=== SUCCESS ===" if $?.exitstatus == 0
 
@@ -115,11 +82,11 @@ class SPVoice
   private
   
   def parse_options
-    config_file = File.expand_path(File.join('~', '.siriproxy', 'config.yml'));
+    config_file = File.expand_path(File.join('~', '.spvoice', 'config.yml'));
 
     unless File.exists?(config_file)
       default_config = config_file
-      config_file = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'config.example.yml'))
+      config_file = File.expand_path(File.join(File.dirname(__FILE__), '..', 'config.example.yml'))
     end
 
     $APP_CONFIG = OpenStruct.new(YAML.load_file(config_file))
@@ -129,32 +96,17 @@ class SPVoice
 
     @branch = nil
     @option_parser = OptionParser.new do |opts|
-      opts.on('-d', '--dns ADDRESS',     '[server]      Launch DNS server guzzoni.apple.com with ADDRESS (requires root)') do |ip| 
-        $APP_CONFIG.server_ip = ip
-      end
       opts.on('-l', '--log LOG_LEVEL',   '[server]      The level of debug information displayed (higher is more)') do |log_level|
         $APP_CONFIG.log_level = log_level
-      end
-      opts.on('-L', '--listen ADDRESS',  '[server]      Address to listen on (central or node)') do |listen|
-        $APP_CONFIG.listen = listen
-      end
-      opts.on('-D', '--upstream-dns SERVERS', Array, '[server]      List of upstream DNS servers to use.  Defaults to \'[8.8.8.8, 8.8.4.4]\'') do |servers|
-        $APP_CONFIG.upstream_dns = servers
       end
       opts.on('-p', '--port PORT',       '[server]      Port number for server (central or node)') do |port_num|
         $APP_CONFIG.port = port_num
       end
-      opts.on('-u', '--user USER',       '[server]      The user to run as after launch') do |user|
-        $APP_CONFIG.user = user
-      end
       opts.on('-b', '--branch BRANCH',   '[update]      Choose the branch to update from (default: master)') do |branch|
         @branch = branch
       end
-      opts.on('-n', '--name CA_NAME',    '[gencerts]    Define a common name for the CA (default: "SiriProxyCA")') do |ca_name|
-        @ca_name = ca_name
-      end 
       opts.on_tail('-v', '--version',  '              Show version') do
-        require "siriproxy/version"
+        require "spvoice/version"
         puts "SPVoice version #{SPVoice::VERSION}"
         exit
       end
@@ -165,7 +117,7 @@ class SPVoice
 
   def setup_bundler_path
     require 'pathname'
-    ENV['BUNDLE_GEMFILE'] ||= File.expand_path("../../../Gemfile",
+    ENV['BUNDLE_GEMFILE'] ||= File.expand_path("../../Gemfile",
       Pathname.new(__FILE__).realpath)
   end
 
@@ -174,12 +126,6 @@ class SPVoice
 
     require 'bundler'
     require 'bundler/setup'
-
-    #require 'siriproxy'
-    #require 'siriproxy/connection'
-    #require 'siriproxy/connection/iphone'
-    #require 'siriproxy/connection/guzzoni'
-
     require 'spvoice/plugin'
     require 'spvoice/plugin_manager'
   end

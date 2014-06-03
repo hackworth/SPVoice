@@ -18,15 +18,16 @@ unless File.exists?(config_file)
 end
 
 gem 'cora', '0.0.4'
+gem 'grape'
 
 config = OpenStruct.new(YAML.load_file(File.expand_path(config_file)))
 if config.plugins
-  puts "[Info - Configuration] Loading plugins -- If any fail to load, run `siriproxy bundle` (not `bundle install`) to resolve."
+  puts "[Info - Configuration] Loading plugins -- If any fail to load, run `spvoice bundle` (not `bundle install`) to resolve."
   config.plugins.each do |plugin|
     if plugin.is_a? String
-      gem "siriproxy-#{plugin.downcase}"
+      gem "spvoice-#{plugin.downcase}"
     else
-  	  gem "siriproxy-#{plugin['gem'] || plugin['name'].downcase}", :path => plugin['path'], :git => plugin['git'], :branch => plugin['branch'], :require => plugin['require']
+  	  gem "spvoice-#{plugin['gem'] || plugin['name'].downcase}", :path => plugin['path'], :git => plugin['git'], :branch => plugin['branch'], :require => plugin['require']
     end
   end
 end

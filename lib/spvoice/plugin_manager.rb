@@ -15,10 +15,10 @@ class SPVoice::PluginManager < Cora
           begin
             if pluginConfig.is_a? String
               className = pluginConfig
-              requireName = "siriproxy-#{className.downcase}"
+              requireName = "spvoice-#{className.downcase}"
             else
               className = pluginConfig['name']
-              requireName = pluginConfig['require'] || "siriproxy-#{className.downcase}"
+              requireName = pluginConfig['require'] || "spvoice-#{className.downcase}"
             end
             require requireName
             plugin = SPVoice::Plugin.const_get(className).new(pluginConfig)
