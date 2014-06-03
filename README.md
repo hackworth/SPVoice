@@ -25,6 +25,8 @@ Edit <code>~/.spvoice/config.yml</code> to add the plugins you want to use.
 Usage
 -----
 
+To start SPVoice's HTTP JSON API, run <code>spvoice server</code>
+
 To use SPVoice from Ruby:
 
     require 'spvoice'
@@ -42,6 +44,7 @@ Please note the HTTP JSON API currently has no authentication, so please don't e
 Plugins
 -------
 [XBMC](https://github.com/Hackworth/SPVoice-XBMC)
+
 [MiOS](https://github.com/Hackworth/SPVoice-MiOS)
 
 License (MIT)
