@@ -41,8 +41,8 @@ Please note the HTTP JSON API currently has no authentication, so please don't e
 
 Plugins
 -------
-(XBMC)[/Hackworth/SPVoice-XBMC]
-(MiOS)[/Hackworth/SPVoice-MiOS]
+[XBMC](https://github.com/Hackworth/SPVoice-XBMC)
+[MiOS](https://github.com/Hackworth/SPVoice-MiOS)
 
 License (MIT)
 -------------
