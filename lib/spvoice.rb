@@ -44,6 +44,7 @@ class SPVoice
   end
 
   def start_server
+    require 'spvoice/server'
   end
 
   def update(directory=nil)

@@ -1,11 +1,10 @@
-port: 443
 log_level: 1
 
 plugins:
     # NOTE: run bundle after changing plugin configurations to update required gems
 
     #- name: 'MiOSsiri'
-      ##git: 'git://github.com/Hackworth/SiriProxy-MiOS.git'
+    ##git: 'git://github.com/Hackworth/SPVoice-MiOS.git'
       #path: 'PATH'
       #mios_host: 'IP_ADDRESS'
 

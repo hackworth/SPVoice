@@ -1,6 +1,7 @@
 About
 -----
-SPVoice was born out of my need for a generic API for voice commands.  You can use it directly as a Ruby object or as an HTTP based JSON API.  SPVoice uses lightly modified SiriProxy plugins, and is, itself, heavily modified SiriProxy code.  
+
+SPVoice was born out of my need for a generic API for voice commands.  You can use it directly as a Ruby object or as an HTTP based JSON API.  SPVoice uses lightly modified SiriProxy plugins, and is, itself, heavily modified SiriProxy code. Using (Siri-API)[/Hackworth/Siri-API] you can run SPVoice plugins using Siri, for example, opening Siri and saying <code>Yahoo watch game of thrones season 4 episode 3</code>
 
 Set-up Instructions
 -------------------
@@ -14,58 +15,34 @@ Install SPVoice:
     mkdir ~/voice-API && cd ~/voice-API
     git clone https://github.com/Hackworth/SPVoice.git 
     cd SPVoice
-    gem build 
+    gem build spvoice.gemspec 
+    gem install spvoice-*.gem
+    mkdir ~/.spvoice
+    cp ./config.example.yml ~/.spvoice/config.yml
 
-**NEW Instructions for 0.5.0**
+Edit <code>~/.spvoice/config.yml</code> to add the plugins you want to use.
 
-Note that the installation instructions have changed. It's no longer necessary to install dnsmasq. Also, SiriProxy is available via rubygems for easy installation.
+Usage
+-----
 
-**Set up RVM and Ruby 2.0.0**
+To use SPVoice from Ruby:
 
-If you don't already have Ruby 2.0.0 (or at least 1.9.3) installed through RVM, please do so in order to make sure you can follow the steps later. Experts can ignore this. If you're unsure, follow these directions carefully:
+    require 'spvoice'
+    spvoice = SPVoice.new
+    puts spvoice.run("Turn on kitchen")
 
-1. Install pre-requisites. Veries by system. For a fresh Ubuntu 12.10 install, these seem to be good:
+To use SPVoice as a HTTP JSON API:
 
-	`sudo apt-get install libxslt1.1 libxslt-dev xvfb build-essential git-core curl libyaml-dev libssl-dev`
+    curl -d '{"command": "turn on hallway"}' 'http://localhost:9000/command' -H Content-Type:application/json
 
-2. Download and install RVM (if you don't have it already):
-	* Download/install RVM:  
-		`curl -L https://get.rvm.io | bash -s stable --ruby`  
-	* Update .bashrc:  
-		`echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"' >> ~/.bashrc`
-		`echo 'export PATH=$HOME/.rvm/bin:$PATH' >> ~/.bashrc`  
-	* Activate changes:  
-		`. ~/.bashrc`   
+    {"response":"Turning on Hallway"}%
 
-3. Install Ruby 2.0.0 (if you don't have it already):   
+Please note the HTTP JSON API currently has no authentication, so please don't expose port 9000 to the internet.
 
-	`rvm install 2.0.0`  
-
-4. Set RVM to use/default to 2.0.0:   
-
-	`rvm use 2.0.0 --default`
-	
-**Set up SiriProxy**
-
-1. Install SiriProxy Gem
- 
-	`gem install siriproxy`
-
-2. Create `~/.siriproxy` directory
-
-	`mkdir ~/.siriproxy`
-
-3. Generate Certificates
-
-	`siriproxy gencerts`
-
-4. Transfer certificate to your phone (it will be located at `~/.siriproxy/ca.pem`, email it to your phone)
-5. Start SiriProxy (`XXX.XXX.XXX.XXX` should be replaced with your server's IP address, e.g. `192.168.1.100`), `nobody` can be replaced with any un-privileged user.
-
-	`rvmsudo siriproxy server -d XXX.XXX.XXX.XXX -u nobody`
-
-6. Tell your phone to use your SiriProxy server as its DNS server (under your Wifi settings)
-7. Test that the server is running by saying "Test Siri Proxy" to your phone.
+Plugins
+-------
+(XBMC)[/Hackworth/SPVoice-XBMC]
+(MiOS)[/Hackworth/SPVoice-MiOS]
 
 License (MIT)
 -------------
