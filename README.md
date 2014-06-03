@@ -1,7 +1,7 @@
 About
 -----
 
-SPVoice was born out of my need for a generic API for voice commands.  You can use it directly as a Ruby object or as an HTTP based JSON API.  SPVoice uses lightly modified SiriProxy plugins, and is, itself, heavily modified SiriProxy code. Using (Siri-API)[/Hackworth/Siri-API] you can run SPVoice plugins using Siri, for example, opening Siri and saying <code>Yahoo watch game of thrones season 4 episode 3</code>
+SPVoice was born out of my need for a generic API for voice commands.  You can use it directly as a Ruby object or as an HTTP based JSON API.  SPVoice uses lightly modified SiriProxy plugins, and is, itself, heavily modified SiriProxy code. Using [Siri-API](https://github.com/Hackworth/Siri-API) you can run SPVoice plugins using Siri, for example, opening Siri and saying <code>Yahoo watch game of thrones season 4 episode 3</code>
 
 Set-up Instructions
 -------------------
