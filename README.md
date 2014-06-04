@@ -47,6 +47,15 @@ Plugins
 
 [MiOS](https://github.com/Hackworth/SPVoice-MiOS)
 
+Converting Plugins from SiriProxy
+---------------------------------
+
+SPVoice uses the same plugin format as SiriProxy, making conversion easy. As an eample, here were the nessicary changes to a plugin to control XBMC:
+
+https://github.com/Hackworth/SPVoice-XBMC/commit/2c30ec44bbb97f5aa867757f2e51140bc9ad9b67
+
+As a general guideline, rename anything that says SiriProxy to SPVoice, and remove any specific Siri objects such as SiriAnswerLine, since SPVoice can only reply in a text format.  
+
 License (MIT)
 -------------
 
